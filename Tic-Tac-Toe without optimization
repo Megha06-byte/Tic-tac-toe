@@ -1,0 +1,100 @@
+import random
+def checkRow(A, row):  
+    refc = A[row][0]  
+    if refc == ' ':  # Check for empty  
+        return None  # Return None if the row is empty  
+    for i in range(1, 3):  # Only check the 3 cells in the row  
+        if A[row][i] != refc:  
+            return None  # Return None if not all the same  
+    return refc  # Return the winning character  
+
+
+def checkCol(A, col):  
+    refc = A[0][col]  
+    if refc == ' ':  # Check for empty  
+        return None  
+    for i in range(1, 3):  
+        if A[i][col] != refc:  
+            return None  
+    return refc  # Return the winning character  
+
+
+def checkDiagLR(A):  
+    refc = A[0][0]  
+    if refc == ' ':  # Check for empty  
+        return None  
+    for i in range(1, 3):  
+        if A[i][i] != refc:  
+            return None  
+    return refc  # Return the winning character  
+
+
+def checkDiagRL(A):  
+    refc = A[0][2]  
+    if refc == ' ':  # Check for empty  
+        return None  
+    for i in range(1, 3):  
+        if A[i][2 - i] != refc:  
+            return None  
+    return refc  # Return the winning character
+
+def checkMatrix(A):
+    #check rows and columns
+    for i in range(3):
+        if checkRow(A,i) is not None:
+            return checkRow(A,i)
+    for i in range(3):
+        if checkCol(A,i)is not None:
+            return checkCol(A,i)
+    #check diagonals
+    if checkDiagLR(A) is not None:
+        return checkDiagLR(A)
+    if checkDiagRL(A) is not None:
+        return checkDiagLR(A)
+    return None
+def printBoard(A):
+    for row in A:
+        print("|".join(row))#print each row with spaces
+        print("-"*9)#print a seperator line
+#Initialize the game
+A = [[' ' for _ in range(3)]for _ in range(3)]
+row_set = {0,1,2}
+col_set = {0,1,2} 
+
+r = random.choice(list(row_set))
+c = random.choice(list(col_set))
+A[r][c] = 'O'
+
+while True:
+    print("Current Board")
+    printBoard(A)
+    #check for a winner
+    final = checkMatrix(A)
+    if checkMatrix(A):
+        print("The winner is",final)
+        break
+    #player's move
+    r = int(input("enter row no"))
+    c = int(input("enter col no"))
+    
+    A[r][c] = 'X'
+    final = checkMatrix(A)
+    if checkMatrix(A):
+        print("The winner is",final)
+        break
+    r = random.choice(list(row_set))
+    c = random.choice(list(col_set))
+    while A[r][c]!=' ':
+        r = random.choice(list(row_set))
+        c = random.choice(list(col_set))
+    A[r][c] = 'O'
+    final = checkMatrix(A)
+    if checkMatrix(A):
+        print("The winner is",final)
+        break
+    # Check for a draw (if the board is full)  
+    if all(cell != ' ' for row in A for cell in row):  
+        printBoard(A)  
+        print("It's a draw!")  
+        break 
+print("GAME OVER!")
