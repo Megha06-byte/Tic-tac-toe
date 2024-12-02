@@ -102,10 +102,24 @@ def OptimalMove(A):
                     move = (i, j)  
     return move  
 
-def printBoard(A):  
-    for row in A:  
-        print("|".join(row))  
-        print("-" * 9)  
+def printBoard(A):
+    for i in range(3):
+        for j in range(3):
+            if j<2:
+                if A[i][j] == ' ':
+                    print("    |",end ='')
+                if A[i][j] == 'O':
+                    print(" O|",end = '')
+                if A[i][j] =='X':
+                    print(" X|",end = '')
+            if j==2:
+                if A[i][j]==' ':
+                    print("    ")
+                if A[i][j]=='O':
+                    print(" O")
+                if A[i][j]=='X':
+                    print(" X")
+        if i<2: print("-"*12)  
 
 A = [[' ' for _ in range(3)] for _ in range(3)]  
 
