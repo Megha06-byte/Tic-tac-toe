@@ -107,11 +107,11 @@ def printBoard(A):
         for j in range(3):
             if j<2:
                 if A[i][j] == ' ':
-                    print("    |",end ='')
+                    print("   |",end ='')
                 if A[i][j] == 'O':
-                    print(" O|",end = '')
+                    print(" O |",end = '')
                 if A[i][j] =='X':
-                    print(" X|",end = '')
+                    print(" X |",end = '')
             if j==2:
                 if A[i][j]==' ':
                     print("    ")
@@ -186,7 +186,7 @@ while True:
                         print("It's a draw")
                         break
                     elif checkMatrix(A)=='O':
-                        print("The winner is O")
+                        print("")
                         break
 
     # Now computer makes a move  
@@ -204,7 +204,7 @@ while True:
     # Check for a draw after the computer's move  
     if all(cell != ' ' for row in A for cell in row):  
         printBoard(A)  
-        print("It's a draw!")  
+        print("")  
         break   
     
 print("Game Over!")  
