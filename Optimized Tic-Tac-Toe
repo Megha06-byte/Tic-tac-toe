@@ -1,5 +1,5 @@
 import random  
-
+# Checking for a win in row
 def checkRow(A, row):  
     refc = A[row][0]  
     if refc == ' ':  
@@ -8,7 +8,7 @@ def checkRow(A, row):
         if A[row][i] != refc:  
             return None  
     return refc  
-
+# Checking for a win in column
 def checkCol(A, col):  
     refc = A[0][col]  
     if refc == ' ':  
@@ -17,7 +17,7 @@ def checkCol(A, col):
         if A[i][col] != refc:  
             return None  
     return refc  
-
+# Checking for a win along left to right diagonal
 def checkDiagLR(A):  
     refc = A[0][0]  
     if refc == ' ':  
@@ -26,7 +26,7 @@ def checkDiagLR(A):
         if A[i][i] != refc:  
             return None  
     return refc  
-
+# Checking for a win along right to left diagonal
 def checkDiagRL(A):  
     refc = A[0][2]  
     if refc == ' ':  
@@ -35,7 +35,7 @@ def checkDiagRL(A):
         if A[i][2 - i] != refc:  
             return None  
     return refc  
-
+# Check the whole Matrix
 def checkMatrix(A):  
     for i in range(3):  
         if checkRow(A, i) is not None:  
@@ -49,7 +49,7 @@ def checkMatrix(A):
         return checkDiagRL(A)  
     
     return None  
-
+# Calculating minimum number of moves upto a winning configuration
 def No_of_Moves(A, row, col, curr=0):  
     min_moves = 1000  
     A[row][col] = 'O'  
@@ -66,7 +66,7 @@ def No_of_Moves(A, row, col, curr=0):
                     ans = No_of_Moves(A, i, j, curr + 1)  
                 min_moves = min(min_moves, ans)  
                 A[i][j] = ' '  
-    A[row][col] = ' '  
+    A[row][col] = ' '  # We are only checking, so remove any changes made to the board.  
     return min_moves  
 
 def OptimalMove(A):  
@@ -91,6 +91,7 @@ def OptimalMove(A):
                 A[i][j] = ' '  
                 
     # Lastly, pick the optimal move based on min no. of future moves  
+    # The optimal move is selected according to minimum number of moves needed
     min_moves = 1000  
     move = (-1, -1)  
     for i in range(3):  
@@ -172,6 +173,7 @@ while True:
         printBoard(A)  
         print("It's a draw!")  
         break
+    #checking for a draw
     empty = 0
     for i in range(3):
         for j in range(3):
