@@ -92,8 +92,8 @@ def OptimalMove(A):
                 
     # Lastly, pick the optimal move based on min no. of future moves  
     # The optimal move is selected according to minimum number of moves needed
-    min_moves = 1000  
-    move = (-1, -1)  
+    min_moves = 1000
+    move = (-1,-1)
     for i in range(3):  
         for j in range(3):  
             if A[i][j] == ' ':  
@@ -173,7 +173,7 @@ while True:
         printBoard(A)  
         print("It's a draw!")  
         break
-    #checking for a draw
+    # Checking for a draw
     empty = 0
     for i in range(3):
         for j in range(3):
@@ -185,7 +185,7 @@ while True:
                 if A[i][j] ==' ':
                     A[i][j] = 'O'
                     if checkMatrix(A)!='O':
-                        print("It's a draw")
+                        print("It's a draw!")
                         printBoard(A)
                         break
                     elif checkMatrix(A)=='O':
@@ -193,8 +193,8 @@ while True:
                         break
 
     # Now computer makes a move  
-    move = OptimalMove(A)  
-    if move != (-1, -1):  
+    move = OptimalMove(A) 
+    if move!=(-1,-1):
         A[move[0]][move[1]] = 'O'  
 
     # Check for a winner after the computer's move  
@@ -205,8 +205,7 @@ while True:
         break  
 
     # Check for a draw after the computer's move  
-    if all(cell != ' ' for row in A for cell in row):  
-        printBoard(A)  
+    if all(cell != ' ' for row in A for cell in row):    
         print("")  
         break   
     
