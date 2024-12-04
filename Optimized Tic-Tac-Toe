@@ -186,6 +186,7 @@ while True:
                     A[i][j] = 'O'
                     if checkMatrix(A)!='O':
                         print("It's a draw")
+                        printBoard(A)
                         break
                     elif checkMatrix(A)=='O':
                         print("")
@@ -210,4 +211,4 @@ while True:
         break   
     
 print("Game Over!")  
-printBoard(A)
+
