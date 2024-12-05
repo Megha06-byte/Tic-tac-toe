@@ -1,0 +1,175 @@
+mport random  
+
+# Checking for a win in row  
+def checkRow(A, row):  
+    refc = A[row][0]  
+    if refc == ' ':  
+        return None  
+    for i in range(1, 3):  
+        if A[row][i] != refc:  
+            return None  
+    return refc  
+
+# Checking for a win in column  
+def checkCol(A, col):  
+    refc = A[0][col]  
+    if refc == ' ':  
+        return None  
+    for i in range(1, 3):  
+        if A[i][col] != refc:  
+            return None  
+    return refc  
+
+# Checking for a win along left to right diagonal  
+def checkDiagLR(A):  
+    refc = A[0][0]  
+    if refc == ' ':  
+        return None  
+    for i in range(1, 3):  
+        if A[i][i] != refc:  
+            return None  
+    return refc  
+
+# Checking for a win along right to left diagonal  
+def checkDiagRL(A):  
+    refc = A[0][2]  
+    if refc == ' ':  
+        return None  
+    for i in range(1, 3):  
+        if A[i][2 - i] != refc:  
+            return None  
+    return refc  
+
+# Check the whole Matrix  
+def checkMatrix(A):  
+    for i in range(3):  
+        if checkRow(A, i) is not None:  
+            return checkRow(A, i)  
+        if checkCol(A, i) is not None:  
+            return checkCol(A, i)  
+    
+    if checkDiagLR(A) is not None:  
+        return checkDiagLR(A)  
+    if checkDiagRL(A) is not None:  
+        return checkDiagRL(A)  
+
+    if all(A[i][j] != ' ' for i in range(3) for j in range(3)):  
+        return 'D'   
+    
+    return None  
+
+# Calculating minimum number of moves up to a winning configuration  
+def Minimax(A, ch):  
+    # Base Case  
+    if checkMatrix(A) == 'X':  # X is the AI player  
+        return 1  # X wins  
+    elif checkMatrix(A) == 'O':  
+        return -1  # O wins  
+    elif checkMatrix(A) == 'D':  
+        return 0  # draw.  
+    
+    if ch == 'X':  
+        maxVal = float('-inf')  
+        for i in range(3):  
+            for j in range(3):  
+                if A[i][j] == ' ':  
+                    A[i][j] = 'X'   
+                    val = Minimax(A, 'O')  
+                    A[i][j] = ' '  
+                    maxVal = max(maxVal, val)  # chooses 1 else 0  
+        return maxVal  
+    else:  # Minimizing player  
+        minVal = float('inf')  
+        for i in range(3):  
+            for j in range(3):  
+                if A[i][j] == ' ':  
+                    A[i][j] = 'O'  # Make the move  
+                    val = Minimax(A, 'X')  # Evaluate for maximizing player  
+                    A[i][j] = ' '  # Undo the move  
+                    minVal = min(minVal, val)  # chooses -1 else 0  
+        return minVal  
+
+def findOptimalMove(A):  
+    best_value = float('-inf')  # Start with the worst score for X  
+    best_move = None  
+    for i in range(3):  
+        for j in range(3):  
+            if A[i][j] == ' ':  
+                A[i][j] = 'X'  # Simulate the move  
+                move = Minimax(A, 'O')  # Evaluate the move  
+                A[i][j] = ' '  # Undo the move  
+                if move > best_value:  # Maximize score  
+                    best_value = move  
+                    best_move = (i, j)  
+    return best_move  # Return the best move   
+
+def printBoard(A):  
+    for i in range(3):  
+        for j in range(3):  
+            if j < 2:  
+                if A[i][j] == ' ':  
+                    print("   |", end ='')  
+                elif A[i][j] == 'O':  
+                    print(" O |", end = '')  
+                elif A[i][j] == 'X':  
+                    print(" X |", end = '')  
+            if j == 2:  
+                if A[i][j] == ' ':  
+                    print("    ")  
+                elif A[i][j] == 'O':  
+                    print(" O")  
+                elif A[i][j] == 'X':  
+                    print(" X")  
+        if i < 2:   
+            print("-" * 12)  
+
+# Initialize the board  
+A = [[' ' for _ in range(3)] for _ in range(3)]  
+
+# Randomly place the first computer move  
+while True:  
+    r = random.randint(0, 2)  
+    c = random.randint(0, 2)  
+    if A[r][c] == ' ':  
+        A[r][c] = 'X'  
+        break  
+
+# Example game loop  
+current_player = 'O'  # AI starts first  
+while True:  
+    printBoard(A)  
+    if current_player == 'X':  
+        move = findOptimalMove(A)  
+        if move:  
+            A[move[0]][move[1]] = 'X'  
+        else:  
+            print("It's a draw!")  
+            break  
+    else:  
+        # Get user input for 'O'  
+        while True:  
+            try:  
+                player_row = int(input("Enter row number (0, 1, 2): "))  
+                player_col = int(input("Enter column number (0, 1, 2): "))  
+                if A[player_row][player_col] == ' ':  
+                    A[player_row][player_col] = 'O'  
+                    break 
+                else:  
+                    print("Invalid move. The cell is already occupied. Try again.")  
+            except (ValueError, IndexError):  
+                print("Invalid input. Please enter row and column as two space-separated numbers (0, 1, or 2). Try again.")  
+                    
+    # Check for the result  
+    result = checkMatrix(A)  
+    if result:  
+        printBoard(A)  
+        if result == 'X':  
+            print("AI (X) wins!")  
+        elif result == 'O':  
+            print("You (O) win!")  
+        elif result == 'D':  
+            print("It's a draw!")  
+        break  
+
+    # Switch player  
+    current_player = 'O' if current_player == 'X' else 'X'
